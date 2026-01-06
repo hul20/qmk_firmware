@@ -18,11 +18,11 @@ A custom 61-key keyboard using Arduino Pro Micro and MCP23017 (CJMCU-2317) I2C G
 
 **Row Pins (5 rows)**:
 
--   Row 0: D3
--   Row 1: D2
--   Row 2: D4
--   Row 3: C6
--   Row 4: E6
+-   Row 0: C6
+-   Row 1: D7
+-   Row 2: E6
+-   Row 3: B4
+-   Row 4: B5
 
 **I2C Pins**:
 
@@ -53,19 +53,20 @@ A custom 61-key keyboard using Arduino Pro Micro and MCP23017 (CJMCU-2317) I2C G
 
 The keyboard uses a standard 61-key ANSI layout:
 
-```
+``
 ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───────┐
 │Esc│ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │ 0 │ - │ = │ Backsp│
 ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─────┤
-│ Tab │ Q │ W │ E │ R │ T │ Y │ U │ I │ O │ P │ [ │ ] │  \  │
+│ Tab │ Q │ W │ E │ R │ T │ Y │ U │ I │ O │ P │ [ │ ] │ \ │
 ├─────┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴─────┤
-│ Caps │ A │ S │ D │ F │ G │ H │ J │ K │ L │ ; │ ' │  Enter │
+│ Caps │ A │ S │ D │ F │ G │ H │ J │ K │ L │ ; │ ' │ Enter │
 ├──────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────────┤
-│ Shift  │ Z │ X │ C │ V │ B │ N │ M │ , │ . │ / │  Shift   │
+│ Shift │ Z │ X │ C │ V │ B │ N │ M │ , │ . │ / │ Shift │
 ├────┬───┴┬──┴─┬─┴───┴───┴───┴───┴───┴──┬┴───┼───┴┬────┬────┤
-│Ctrl│GUI │Alt │         Space          │ Alt│GUI │Menu│Ctrl│
+│Ctrl│GUI │Alt │ Space │ Alt│GUI │Menu│Ctrl│
 └────┴────┴────┴────────────────────────┴────┴────┴────┴────┘
-```
+
+````
 
 ## Building Firmware
 
@@ -73,7 +74,7 @@ Make example for this keyboard (after setting up your build environment):
 
 ```bash
 make ube61:default
-```
+````
 
 Flashing example for this keyboard:
 

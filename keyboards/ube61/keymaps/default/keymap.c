@@ -38,8 +38,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {  // Volume knob
         if (clockwise) {
+            tap_code(KC_VOLU); 
             tap_code(KC_VOLU);  // Volume up
         } else {
+            tap_code(KC_VOLD);
             tap_code(KC_VOLD);  // Volume down
         }
     }
@@ -50,7 +52,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 #ifdef OLED_ENABLE
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-    return OLED_ROTATION_270;  // Vertical orientation for 32x128 display
+    return OLED_ROTATION_90;  // Rotated 180 degrees
 }
 
 // Render the OLED info panel (9 lines max)
