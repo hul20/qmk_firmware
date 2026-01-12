@@ -46,15 +46,19 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         if (clockwise) {
             tap_code(KC_VOLU);
             tap_code(KC_VOLU);
-            if (current_volume < 100) current_volume += 4;
-            if (current_volume > 100) current_volume = 100;
+            if (current_volume <= 96) {
+                current_volume += 4;
+            } else {
+                current_volume = 100;
+            }
         } else {
             tap_code(KC_VOLD);
             tap_code(KC_VOLD);
-            if (current_volume >= 4)
+            if (current_volume >= 4) {
                 current_volume -= 4;
-            else
+            } else {
                 current_volume = 0;
+            }
         }
         show_volume          = true;
         volume_display_timer = timer_read32();
@@ -108,8 +112,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 
 // Render the OLED info panel (9 lines max)
 bool oled_task_user(void) {
-    static bool was_showing_volume = false;
-    static bool was_idle           = false;
+    static bool was_idle = false;
 
     // Hide volume indicator after 2 seconds
     if (show_volume && timer_elapsed32(volume_display_timer) > 2000) {
@@ -119,33 +122,42 @@ bool oled_task_user(void) {
 
     // Show volume bar when adjusting
     if (show_volume) {
-        if (!was_showing_volume) {
-            oled_clear();
-            was_showing_volume = true;
-        }
+        // Clear screen for each update to allow volume to decrease visually
+        oled_clear();
+
+        // Show percentage at top
         oled_set_cursor(0, 0);
-        oled_write_ln_P(PSTR("VOL  "), false);
-
-        // Draw 7 bars (fit in 9 lines total), fill from bottom to top
-        // Each bar represents ~14% volume
-        uint8_t filled_bars = (current_volume * 7) / 100; // 0-7 bars
-        for (uint8_t i = 0; i < 7; i++) {
-            if (i < (7 - filled_bars)) {
-                oled_write_ln_P(PSTR("[   ]"), false); // Empty bar
-            } else {
-                oled_write_ln_P(PSTR("[>>>]"), false); // Filled bar
-            }
-        }
-
-        // Show percentage
         char vol_str[6];
         snprintf(vol_str, sizeof(vol_str), "%3u%%", current_volume);
         oled_write_ln(vol_str, false);
 
+        // Draw volume bar using pixel rectangles
+        // After 90° rotation: display is 32px wide x 128px tall
+        const uint8_t bar_width = 24;
+        const uint8_t bar_height = 100;
+        const uint8_t bar_x = (32 - bar_width) / 2; // Center horizontally
+        const uint8_t bar_y = 20; // Start position from top
+
+        // Draw outer border
+        for (uint8_t x = bar_x; x < bar_x + bar_width; x++) {
+            oled_write_pixel(x, bar_y, true);
+            oled_write_pixel(x, bar_y + bar_height - 1, true);
+        }
+        for (uint8_t y = bar_y; y < bar_y + bar_height; y++) {
+            oled_write_pixel(bar_x, y, true);
+            oled_write_pixel(bar_x + bar_width - 1, y, true);
+        }
+
+        // Fill bar based on volume (fill from bottom to top)
+        uint8_t fill_height = (current_volume * (bar_height - 4)) / 100; // -4 for border spacing
+        for (uint8_t y = 0; y < fill_height; y++) {
+            for (uint8_t x = bar_x + 2; x < bar_x + bar_width - 2; x++) {
+                oled_write_pixel(x, bar_y + bar_height - 3 - y, true);
+            }
+        }
+
         return false;
     }
-
-    was_showing_volume = false;
 
     // Check idle time (10 seconds = 10000ms)
     if (timer_elapsed32(last_activity_time) > 10000) {
