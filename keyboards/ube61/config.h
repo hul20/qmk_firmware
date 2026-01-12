@@ -9,7 +9,7 @@
 
 // Row pins (direct on Pro Micro)
 // Using available digital pins: 5-9 physical pins
-#define MATRIX_ROW_PINS { C6, D7, E6, B4, B5 }
+#define MATRIX_ROW_PINS {C6, D7, E6, B4, B5}
 
 // I2C Configuration for Pro Micro
 // Pro Micro I2C: SDA = D1 (pin 2), SCL = D0 (pin 3)
@@ -23,9 +23,9 @@
 // Diode direction - diodes in columns
 #define DIODE_DIRECTION COL2ROW
 
-#define DEBOUNCE 5
+#define DEBOUNCE 50
 
-#define I2C1_CLOCK_SPEED 100000
+#define I2C1_CLOCK_SPEED 400000
 
 #define OLED_DISPLAY_128X32
 #define OLED_DISPLAY_ADDRESS 0x3C
@@ -37,5 +37,4 @@
 
 // Rotary Encoder Configuration
 // Encoder pins are defined in keyboard.json
-#define ENCODER_RESOLUTION 4  // Adjust to 2 if too sensitive
-
+#define ENCODER_RESOLUTION 4 // Adjust to 2 if too sensitive

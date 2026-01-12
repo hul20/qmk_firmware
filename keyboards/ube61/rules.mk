@@ -32,3 +32,5 @@ WPM_ENABLE = yes
 # Rotary encoder support
 ENCODER_ENABLE = yes
 
+# Debounce Algorithm
+DEBOUNCE_TYPE = sym_eager_pk
